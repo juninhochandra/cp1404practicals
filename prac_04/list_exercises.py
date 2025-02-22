@@ -1,7 +1,9 @@
+TOTAL_NUMS = 5
+
 # Basic list operations
 numbers = []
 
-for i in range(5):
+for i in range(TOTAL_NUMS):
     number = int(input("Number: "))
     numbers.append(number)
 

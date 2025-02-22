@@ -1,13 +1,10 @@
-total_nums = int(input("Enter number of numbers: "))
-while total_nums < 0:
-    print("Invalid input!")
-    total_nums = int(input("Enter number of numbers: "))
+TOTAL_NUMS = 5
 
 # Basic list operations
 numbers = []
 
-for i in range(total_nums):
-    number = int(input(f"Number {i + 1}: "))
+for i in range(TOTAL_NUMS):
+    number = int(input("Number: "))
     numbers.append(number)
 
 print(f"The first number is {numbers[0]}")

@@ -1,4 +1,4 @@
-""" 4:19
+"""
 Word Occurrences
 Estimate: 20 minutes
 Actual:   16 minutes

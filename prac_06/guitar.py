@@ -1,4 +1,4 @@
-""" 21.32
+"""
 Guitar
 Estimate: 10 minutes
 Actual:   5 minutes

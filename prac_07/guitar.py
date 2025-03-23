@@ -14,7 +14,12 @@ class Guitar:
         self.cost = cost
 
     def __str__(self):
+        """Display object as a string"""
         return f"{self.name} ({self.year}) : ${self.cost}"
+
+    def __lt__(self, other):
+        """Compare year"""
+        return self.year < other.year
 
     def get_age(self):
         """Get the age of the guitar"""

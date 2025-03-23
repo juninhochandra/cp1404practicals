@@ -14,8 +14,12 @@ def main():
     # Close the file as soon as we've finished reading it
     in_file.close()
 
+    guitars.sort()
+
     # Loop through and display all guitars (using their str method)
     for guitar in guitars:
         print(guitar)
+
+
 
 main()

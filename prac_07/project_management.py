@@ -5,6 +5,7 @@ Actual:    minutes
 """
 
 import datetime
+from operator import itemgetter
 from project import Project
 
 FILE_NAME = "projects.txt"
@@ -36,7 +37,7 @@ def main():
         elif choice == "d":
             display_projects(projects)
         elif choice == "f":
-            pass
+            filter_projects_by_date(projects)
         elif choice == "a":
             add_project(projects)
         elif choice == "u":
@@ -91,8 +92,8 @@ def update_project(projects):
     project = projects[project_choice]
     print(project)
 
-    priority_choice = get_priority("New priority: ")
     percentage_choice = get_percentage("New percentage: ")
+    priority_choice = get_priority("New priority: ")
 
     if percentage_choice != "":
         setattr(project, "completion", percentage_choice)
@@ -100,16 +101,21 @@ def update_project(projects):
         setattr(project, "priority", priority_choice)
 
 def add_project(projects):
+    """Add a new project and append to the list"""
     print("Let's add a new project")
     project_name = input("Name: ")
+    while project_name == "":
+        project_name = input("Name: ")
 
     is_valid_choice = False
     project_date = input("Start date (dd/mm/yy): ")
     while not is_valid_choice:
         try:
-            is_valid_choice = bool(datetime.datetime.strptime(project_date, "%d/%m/%Y"))
+            project_date = datetime.datetime.strptime(project_date, "%d/%m/%Y").date()
+            is_valid_choice = True
         except ValueError:
             project_date = input("Start date (dd/mm/yy): ")
+    project_date = project_date.strftime("%d/%m/%Y")
 
     project_priority = get_priority("Priority: ")
     while project_priority == "":
@@ -130,6 +136,42 @@ def add_project(projects):
 
     project = Project(project_name, project_date, project_priority, project_cost, project_completion)
     projects.append(project)
+
+def filter_projects_by_date(projects):
+    is_valid_choice = False
+    date = input("Show projects that start after date (dd/mm/yy): ")
+    while not is_valid_choice:
+        try:
+            date = datetime.datetime.strptime(date, "%d/%m/%Y").date()
+            is_valid_choice = bool(date)
+        except ValueError:
+            date = input("Show projects that start after date (dd/mm/yy): ")
+
+    date_year = int(date.strftime("%Y"))
+    date_month = int(date.strftime("%m"))
+    date_day = int(date.strftime("%d"))
+
+    projects_by_date = []
+    for project in projects:
+        project_date = datetime.datetime.strptime(project.start_date, "%d/%m/%Y").date()
+        project_date_year = int(project_date.strftime("%Y"))
+        if project_date_year > date_year:
+            # By year
+            projects_by_date.append([project, project_date])
+        elif project_date_year == date_year:
+            project_date_month = int(project_date.strftime("%m"))
+            if project_date_month > date_month:
+                # By month
+                projects_by_date.append([project, project_date])
+            elif project_date_month == date_month:
+                project_date_day = int(project_date.strftime("%d"))
+                if project_date_day >= date_day:
+                    # By day
+                    projects_by_date.append([project, project_date])
+
+    projects_by_date.sort(key=itemgetter(1))
+    for project in projects_by_date:
+        print(project[0])
 
 def get_priority(prompt):
     is_valid_choice = False

@@ -76,10 +76,10 @@ def display_projects(projects):
     completed_projects = []
 
     for project in duplicate_projects:
-        if project.completion < 100:
-            print(f"\t{project}")
-        else:
+        if project.is_completed():
             completed_projects.append(project)
+        else:
+            print(f"\t{project}")
     print("Completed projects:")
     for project in completed_projects:
         print(f"\t{project}")

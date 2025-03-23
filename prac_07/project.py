@@ -13,3 +13,6 @@ class Project:
 
     def __lt__(self, other):
         return self.priority < other.priority
+
+    def is_completed(self):
+        return self.completion == 100

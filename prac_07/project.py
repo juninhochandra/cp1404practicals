@@ -7,3 +7,9 @@ class Project:
         self.priority = priority
         self.cost = cost
         self.completion = completion
+
+    def __str__(self):
+        return f"{self.name}, start: {self.start_date}, priority {self.priority}, estimate: ${self.cost}, completion: {self.completion}%"
+
+    def __lt__(self, other):
+        return self.priority < other.priority

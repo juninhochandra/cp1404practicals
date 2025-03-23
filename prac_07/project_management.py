@@ -22,35 +22,45 @@ def main():
     print("Welcome to Pythonic Project Management")
 
     # Get projects from file
-    projects = load_projects()
+    projects = load_projects(FILE_NAME)
     print(f"Loaded {len(projects)} projects from {FILE_NAME}")
 
     # Menu interface
+    is_saved = True
     print(MENU)
     choice = input(">>> ").lower()
     while choice != "q":
         if choice == "l":
-            projects = load_projects()
-            print(f"Loaded {len(projects)} projects from {FILE_NAME}")
+            file_name = input("File: ")
+            while file_name == "":
+                file_name = input("File: ")
+            projects = load_projects(file_name)
+            print(f"Loaded {len(projects)} projects from {file_name}")
+            is_saved = True
         elif choice == "s":
-            pass
+            save_projects(projects)
+            is_saved = True
         elif choice == "d":
             display_projects(projects)
         elif choice == "f":
             filter_projects_by_date(projects)
         elif choice == "a":
             add_project(projects)
+            is_saved = False
         elif choice == "u":
             update_project(projects)
-        else:
-            pass
+            is_saved = False
         print(MENU)
         choice = input(">>> ").lower()
+    if not is_saved:
+        print("Would you like to save to projects.txt? no, I think not.")
+    print("Thank you for using custom-built project management software.")
 
-def load_projects():
+def load_projects(file_name):
     """Loaded projects from file and store in a list"""
+
     projects = []
-    in_file = open(FILE_NAME, "r")
+    in_file = open(file_name, "r")
     in_file.readline()
     for line in in_file:
         parts = line.split("\t")
@@ -172,6 +182,17 @@ def filter_projects_by_date(projects):
     projects_by_date.sort(key=itemgetter(1))
     for project in projects_by_date:
         print(project[0])
+
+def save_projects(projects):
+    file_name = input("Save to: ")
+    while file_name == "":
+        file_name = input("Save to: ")
+
+    # write to file
+    with open(file_name, "w") as file:
+        file.write("Name\tStart Date\tPriority\tCost Estimate\tCompletion Percentage\n")
+        for project in projects:
+            file.write(f"{project.name}\t{project.start_date}\t{project.priority}\t{project.cost}\t{project.completion}\n")
 
 def get_priority(prompt):
     is_valid_choice = False

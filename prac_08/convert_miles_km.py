@@ -15,6 +15,7 @@ class MilesToKilometres(App):
     def validate_input(self):
         try:
             number = float(self.root.ids.input_number.text)
+            self.convert_miles_to_km()
         except ValueError:
             self.result = "0.0"
 
@@ -24,6 +25,7 @@ class MilesToKilometres(App):
             self.root.ids.input_number.text = str(number + num)
         except ValueError:
             self.root.ids.input_number.text = str(num)
+        self.convert_miles_to_km()
 
     def convert_miles_to_km(self):
         self.result = str(float(self.root.ids.input_number.text) * MILES_TO_KM)

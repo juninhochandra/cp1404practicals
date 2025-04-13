@@ -1,6 +1,6 @@
 from wikipedia import wikipedia, PageError, DisambiguationError
 
-PROMPT = "Page title or search phrase: "
+PROMPT = "Enter page title: "
 
 title = input(PROMPT)
 while title != "":
@@ -13,7 +13,6 @@ while title != "":
         print(f"Page id \"{title}\" does not match any pages. Try another id!")
     except DisambiguationError:
         print("We need a more specific title. Try one of the following, or a new search:")
-        print(wikipedia.suggest(title))
         print(wikipedia.search(title))
     print()
     title = input(PROMPT)
